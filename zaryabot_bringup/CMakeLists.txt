@@ -9,8 +9,21 @@ project(zaryabot_bringup)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  cv_bridge
+  image_transport
 )
 
+find_package( OpenCV REQUIRED )
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+
+# set the path to the library folder
+find_package(modbus REQUIRED)
+if( NOT MODBUS_FOUND)
+    message(FATAL_ERROR "Package modbus not found! ")
+endif( NOT MODBUS_FOUND)
+
+set(LIBS ${LIBS} ${MODBUS_LIBRARIES})
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -131,7 +144,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/zaryabot_bringup_node.cpp)
+
+add_executable(webcam_loader_node src/webcam_loader.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -144,9 +158,11 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+
+target_link_libraries(webcam_loader_node
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
 
 #############
 ## Install ##
@@ -189,9 +205,22 @@ include_directories(
 
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_zaryabot_bringup.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+if (CATKIN_ENABLE_TESTING)
 
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+  add_executable(modbus_exampe_node test/modbus_exampe.cpp)
+
+  add_executable(opencv_test_node test/opencv_test.cpp)
+
+  target_link_libraries(modbus_exampe_node
+    ${catkin_LIBRARIES}
+    ${LIBS}
+  )
+
+  target_link_libraries(opencv_test_node
+    ${catkin_LIBRARIES}
+    ${OpenCV_LIBS}
+  )
+
+endif()
+
+
