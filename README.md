@@ -2,6 +2,16 @@
 
 ROS Stack for Zarya機器人使用
 - 應用於TDK比賽
+---
+## Required Library
+###  1. OpenCV 3.2.0
+###  2. libModbus
+**Install instruction for Ubuntu 16.04**
+
+`
+sudo apt-get install libmodbus-* -y
+`
+---
 
 ## Sensor List
 - Hokuyo urg-04lx-ug01
