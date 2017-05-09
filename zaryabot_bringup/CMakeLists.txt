@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   cv_bridge
   image_transport
+  zaryabot_msgs
 )
 
 find_package( OpenCV REQUIRED )
@@ -211,6 +212,8 @@ if (CATKIN_ENABLE_TESTING)
 
   add_executable(opencv_test_node test/opencv_test.cpp)
 
+  add_executable(wheel_test_node test/wheel_test.cpp)
+
   target_link_libraries(modbus_exampe_node
     ${catkin_LIBRARIES}
     ${LIBS}
@@ -220,6 +223,10 @@ if (CATKIN_ENABLE_TESTING)
     ${catkin_LIBRARIES}
     ${OpenCV_LIBS}
   )
+target_link_libraries(wheel_test_node
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
 
 endif()
 

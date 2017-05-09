@@ -7,7 +7,7 @@ find_package(catkin REQUIRED std_msgs message_generation)
 ## Generate messages in the 'msg' folder
 add_message_files(
   DIRECTORY msg
-  FILES NumPunchState.msg
+  FILES NumPunchState.msg WheelCMD.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
