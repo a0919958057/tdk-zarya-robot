@@ -5,10 +5,9 @@ uint8 LB_Wheel = 2
 uint8 RB_Wheel = 3
 
 #Whell Mode
-uint8 MODE_CW    = 0
-uint8 MODE_CCW   = 1
-uint8 MODE_STOP  = 2
-uint8 MODE_BRAKE = 3
+uint8 MODE_EN    = 0
+uint8 MODE_STOP  = 1
+uint8 MODE_BRAKE = 2
 
 #Wheel Status
 float64[] position
