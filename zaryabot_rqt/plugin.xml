@@ -1,0 +1,17 @@
+<library path="lib/libzaryabot_rqt">
+  <class name="zaryabot_rqt/ZPanel" type="zaryabot_rqt::ZPanel" base_class_type="rqt_gui_cpp::Plugin">
+    <description>
+      A GUI plugin to view a ZaryaBot sensor topic.
+    </description>
+    <qtgui>
+      <group>
+        <label>Visualization</label>
+        <icon type="theme">folder</icon>
+        <statustip>Plugins related to visualization.</statustip>
+      </group>
+      <label>ZPanel</label>
+      <icon type="theme">image-x-generic</icon>
+      <statustip>A GUI plugin to view a ZaryaBot sensor topic.</statustip>
+    </qtgui>
+  </class>
+</library>
