@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" name="mpu6050_serial_to_imu_node" required="true">
+      <param name="port" value="/dev/ttyACM0"/>
+    </node>
+    <node pkg="zaryabot_bringup" type="wheel_command2arduino_node" name="wheel_command2arduino_node"></node>
+    <node pkg="zaryabot_bringup" type="wheel_command_pub2_node" name="wheel_command_pub2_node"></node>
+    <node pkg="zaryabot_bringup" type="wheel_command_test_node" name="wheel_command_test_node"></node>
+    <node pkg="zaryabot_bringup" type="gripper_command2arduino_node" name="gripper_command2arduino_node"></node>
+</launch>

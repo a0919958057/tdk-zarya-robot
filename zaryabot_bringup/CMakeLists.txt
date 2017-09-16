@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(zaryabot_bringup)
+set(CMAKE_BUILD_TYPE Debug)
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 # add_definitions(-std=c++11)
@@ -12,6 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
   zaryabot_msgs
+  zaryabot_srv
+  geometry_msgs
+  std_msgs
 )
 
 find_package( OpenCV REQUIRED )
@@ -26,7 +30,7 @@ endif( NOT MODBUS_FOUND)
 
 set(LIBS ${LIBS} ${MODBUS_LIBRARIES})
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+# find_package(Boost REQUIRED COMP10ONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -130,6 +134,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a C++ library
@@ -148,6 +153,7 @@ include_directories(
 
 add_executable(webcam_loader_node src/webcam_loader.cpp)
 
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -158,12 +164,15 @@ add_executable(webcam_loader_node src/webcam_loader.cpp)
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_dependencies(webcam_loader_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 ## Specify libraries to link a library or executable target against
 
 target_link_libraries(webcam_loader_node
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
 )
+
 
 #############
 ## Install ##
@@ -208,11 +217,36 @@ target_link_libraries(webcam_loader_node
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_zaryabot_bringup.cpp)
 if (CATKIN_ENABLE_TESTING)
 
-  add_executable(modbus_exampe_node test/modbus_exampe.cpp)
+  add_executable(modbus_exampe_node test/modbus_exampe.cpp
+                                    src/modbusmodel.cpp)
 
   add_executable(opencv_test_node test/opencv_test.cpp)
 
-  add_executable(wheel_test_node test/wheel_test.cpp)
+  add_executable(wheel_command_test_node test/wheel_command_test.cpp
+                                         src/robottrancmd.cpp)
+
+  add_executable(wheel_command2arduino_node test/wheel_command2arduino.cpp
+                                            src/robottrancmd.cpp)
+  add_executable(wheel_command_pub_node test/wheel_command_pub.cpp)
+  add_executable(wheel_command_pub2_node test/wheel_command_pub2.cpp)
+  add_executable(modbus_pub_node test/mudbus_pub.cpp)
+  add_executable(gripper_command2arduino_node test/gripper_command2arduino.cpp)
+
+  add_executable(master_service_node test/master_service.cpp)
+  add_executable(master_client_node test/master_client.cpp)
+
+#  add_executable(remote_command2arduino_node test/remote_command2arduino.cpp)
+
+add_dependencies(modbus_exampe_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(opencv_test_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(wheel_command_test_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(wheel_command2arduino_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(wheel_command_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(wheel_command_pub2_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(modbus_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(gripper_command2arduino_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+
 
   target_link_libraries(modbus_exampe_node
     ${catkin_LIBRARIES}
@@ -223,10 +257,38 @@ if (CATKIN_ENABLE_TESTING)
     ${catkin_LIBRARIES}
     ${OpenCV_LIBS}
   )
-target_link_libraries(wheel_test_node
+target_link_libraries(wheel_command_test_node
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
 )
+target_link_libraries(wheel_command2arduino_node
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${LIBS}
+)
+target_link_libraries(wheel_command_pub_node
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(wheel_command_pub2_node
+    ${catkin_LIBRARIES}
+)
+target_link_libraries(modbus_pub_node
+    ${catkin_LIBRARIES}
+)
+target_link_libraries(gripper_command2arduino_node
+    ${catkin_LIBRARIES}
+    ${LIBS}
+)
+target_link_libraries(master_service_node
+    ${catkin_LIBRARIES}
+)
+target_link_libraries(master_client_node
+    ${catkin_LIBRARIES}
+)
+#target_link_libraries(remote_command2arduino_node
+#  ${catkin_LIBRARIES}
+#  ${LIBS}
+#)
 
 endif()
 
